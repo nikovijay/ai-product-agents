@@ -1,129 +1,71 @@
 # Setup Guide
 
-Get your agent running in under 30 minutes.
-
-## Prerequisites
-
-1. **OpenClaw** — install from [openclaw.ai](https://openclaw.ai) or via npm:
-   ```bash
-   npm install -g openclaw
-   ```
-
-2. **A channel** — connect at least one messaging channel. Telegram is the easiest to start:
-   - Go to OpenClaw dashboard → Channels → Add Telegram
-   - Start a chat with your agent bot
-
-3. **An Anthropic API key** — get one at [console.anthropic.com](https://console.anthropic.com)
+Everything in this repo works with any AI assistant — Claude, GPT, Gemini, or a self-hosted model. No special tooling required to get started.
 
 ---
 
-## Step 1: Install the agent config files
+## Option A — Use the agent specs directly (no setup)
 
+Each file in `agent-specs/` contains a `## Skill definition` block with a full system prompt. To use any agent:
+
+1. Open the agent spec file (e.g. `PRD Generator Agent.md`)
+2. Copy the contents of the `## Skill definition` block
+3. Paste it as the system prompt in your AI assistant of choice
+4. Provide the inputs described in the spec
+
+That's it. No installation, no config.
+
+---
+
+## Option B — Load the blueprints into your knowledge base
+
+The `blueprints/` folder contains 53 PM reference documents. The agent specs are designed to draw on these when you make them available.
+
+**Obsidian:**
 ```bash
-# Clone this repo
-git clone https://github.com/nikovijay/ultron-starter-pack.git
-cd ultron-starter-pack
-
-# Copy agent config into your OpenClaw workspace
-cp agent-config/*.md ~/.openclaw/workspace/
+cp -r blueprints/ ~/path/to/your/vault/PM\ Blueprints/
 ```
 
-Then open each file and fill in the `[placeholders]`:
+**Notion:** Import the Markdown files via Settings → Import → Markdown & CSV.
 
-| File | What to fill in |
-|------|----------------|
-| `SOUL.md` | Your agent's name, mission, principles, and tone |
-| `USER.md` | Your profile: name, timezone, projects, social handles |
-| `IDENTITY.md` | Agent name, persona, and emoji |
-| `HEARTBEAT.md` | Adjust the check paths to match your setup |
-| `AGENTS.md` | Review and adjust — most of it is good as-is |
+**Any other tool:** The files are plain Markdown — drop them wherever your AI assistant can read them.
 
 ---
 
-## Step 2: Install the skills
+## Option C — Wire the skills into an AI agent platform
 
-```bash
-# Install council and coding-standards skills
-cp -r skills/council ~/.openclaw/skills/
-cp -r skills/coding-standards ~/.openclaw/skills/
-```
+The `skills/` folder contains two skills formatted for persistent use in an agent:
 
-Restart OpenClaw to pick up the new skills:
-```bash
-openclaw gateway restart
-```
+| Skill | Trigger |
+|-------|---------|
+| `council/` | "council this" — runs The Council decision process |
+| `coding-standards/` | Applies before any coding task — enforces quality gates and git discipline |
 
----
+**Format:** Each skill is a `SKILL.md` file with a YAML frontmatter `description` field that tells the agent when to trigger it, followed by full instructions.
 
-## Step 3: Load the blueprints (optional)
-
-If you use Obsidian:
-```bash
-cp -r blueprints/ ~/[your-vault-path]/PM\ Blueprints/
-```
-
-If you just want them available to the agent, put them anywhere in your workspace or a referenced directory.
+These follow the [OpenClaw](https://openclaw.ai) skill format but the instruction content works with any agent platform that supports persistent system-level instructions or tool definitions.
 
 ---
 
-## Step 4: Set up heartbeats (optional but recommended)
+## Using The Council
 
-Heartbeats let your agent proactively check things without you asking. Set up a recurring cron job:
+The Council skill is the most immediately useful thing in this pack. When you're stuck on a decision:
 
-In your OpenClaw chat, say:
-> "Set up a heartbeat to run every 30 minutes during the day. Check my HEARTBEAT.md for what to do."
+1. Open `agent-specs/The Council Agent.md`
+2. Copy the skill definition block into your AI assistant
+3. Describe your decision
+4. The agent frames the question, runs 5 advisor perspectives, peer-reviews them, and synthesises a verdict with a specific recommendation
 
-Or add it via the OpenClaw cron system directly.
-
----
-
-## Step 5: Test it
-
-Send your agent a message in your connected channel:
-
-> "Who are you and what do you know about me?"
-
-It should read SOUL.md, USER.md, and MEMORY.md and give you a coherent answer based on what you filled in.
-
-Then try:
-> "Council this: [a real decision you're sitting on]"
+If your AI assistant supports parallel tool calls or sub-agents, all 5 advisors run simultaneously (~60 seconds end-to-end). Otherwise they run sequentially — still useful, just slower.
 
 ---
 
 ## Tips
 
-**Start with USER.md.** The agent is only as good as the context you give it. A detailed USER.md immediately makes responses more relevant.
+**Start with one agent, not all of them.** Pick the spec that matches your most pressing problem this week. Run it a few times. Then add more.
 
-**Update MEMORY.md as you go.** After significant conversations, tell the agent: "Update MEMORY.md with what we just decided." This builds your long-term context over time.
+**Give the agents real context.** The specs ask for specific inputs — company name, stack, existing docs, constraints. The more you give, the better the output.
 
-**Sensitive data stays local.** If you process financial records, health data, or private documents, set up a local model (Ollama) and route sensitive tasks there. Never send private data to cloud APIs.
+**Sensitive data stays local.** If you're feeding in financial records, health data, or private corporate docs, use a local model (Ollama, LM Studio, etc.) rather than a cloud API.
 
-**The council is most useful when you're genuinely stuck.** Don't use it for simple questions. Save it for decisions where being wrong is expensive.
-
----
-
-## Troubleshooting
-
-**Agent doesn't seem to read SOUL.md / USER.md**
-- Check that the files are in `~/.openclaw/workspace/`
-- Make sure the file injection is enabled in your OpenClaw config
-- Try saying: "Read SOUL.md and tell me what you find"
-
-**Skills not triggering**
-- Confirm the skill folders are in `~/.openclaw/skills/`
-- Restart the gateway: `openclaw gateway restart`
-- Try saying the exact trigger phrase from the skill's description
-
-**Heartbeats not firing**
-- Check cron status: ask your agent "show me my cron jobs"
-- Verify the schedule and payload in the cron config
-
----
-
-## More resources
-
-- [OpenClaw docs](https://docs.openclaw.ai)
-- [OpenClaw Discord](https://discord.com/invite/clawd)
-- [ClaWHub](https://clawhub.ai) — more skills
-- [@nikovijay on X](https://x.com/nikovijay) — building in public
-- [N+1 newsletter](https://nikovijay.substack.com) — AI-native systems, building, health
+**The Council is for expensive decisions.** Don't use it for simple questions. Save it for forks in the road where being wrong costs real time or money.
