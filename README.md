@@ -1,5 +1,8 @@
 # AI Product Agents
 
+
+> The content in this repo represents my personal work and views. It does not represent the views or positions of any company I work for or am affiliated with.
+
 Reusable AI agent specifications for product leaders. Each skill defines the problem, the agent's process, the output format, and where it best runs.
 
 Also includes 53 PM blueprint reference docs and two drop-in agent skills (The Council + Coding Standards).
