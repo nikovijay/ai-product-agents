@@ -1,8 +1,8 @@
-# ⚡ Build Your Own Ultron
+# AI Product Agents
 
 Reusable AI agent specifications for product leaders. Each skill defines the problem, the agent's process, the output format, and where it best runs.
 
-Also includes 53 PM blueprint reference docs and two drop-in OpenClaw skills (The Council + Coding Standards).
+Also includes 53 PM blueprint reference docs and two drop-in agent skills (The Council + Coding Standards).
 
 ---
 
@@ -71,11 +71,11 @@ See [The PM Stack](agent-specs/The%20PM%20Stack.md) for the tool layer — every
 ## Also in this repo
 
 ### `skills/`
-Drop-in skills for [OpenClaw](https://openclaw.ai). Copy into `~/.openclaw/skills/` and restart the gateway.
+Drop-in skill definitions. Paste the system prompt into any AI assistant, or install into your agent platform of choice.
 
 | Skill | What it does |
 |-------|-------------|
-| [council](skills/council/SKILL.md) | Wires The Council into your OpenClaw agent — trigger with "council this" |
+| [council](skills/council/SKILL.md) | Runs The Council — trigger with "council this" |
 | [coding-standards](skills/coding-standards/SKILL.md) | Enforces consistent coding patterns, git discipline, and quality gates across all AI-generated code |
 
 ### `blueprints/`
@@ -96,12 +96,12 @@ See [blueprints/README.md](blueprints/README.md) for the full index.
 Each file in `agent-specs/` is a self-contained skill definition with:
 - The **problem** it solves
 - What the **agent does**, step by step
-- The full **SKILL.md block** — paste directly into any AI assistant as a system prompt
+- The full **skill definition block** — paste directly into any AI assistant as a system prompt
 - **Example inputs and outputs**
 
 No special tooling required. Paste the skill definition into Claude, GPT, or Gemini and go.
 
-To wire them into [OpenClaw](https://openclaw.ai) as persistent skills, see [SETUP.md](SETUP.md).
+See [SETUP.md](SETUP.md) for more options.
 
 ---
 
