@@ -1,4 +1,4 @@
-# AI Product Agents
+# PM AI Skills Kit
 
 
 > The content in this repo represents my personal work and views. It does not represent the views or positions of any company I work for or am affiliated with.
