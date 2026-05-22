@@ -66,6 +66,5 @@ If your AI assistant supports parallel tool calls or sub-agents, all 5 advisors 
 
 **Give the agents real context.** The specs ask for specific inputs — company name, stack, existing docs, constraints. The more you give, the better the output.
 
-**Sensitive data stays local.** If you're feeding in financial records, health data, or private corporate docs, use a local model (Ollama, LM Studio, etc.) rather than a cloud API.
 
 **The Council is for expensive decisions.** Don't use it for simple questions. Save it for forks in the road where being wrong costs real time or money.
